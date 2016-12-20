@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--注意：日志文件存放在web容器所在目录的根目录(如C:盘,D:盘)；-->
+	<!--日志级别TRACE, DEBUG, INFO, WARN , ERROR-->
+
+
+	<contextName>framework</contextName>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!--滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件-->
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/webproject/log/framework.log</file>
+		<!--按天新建日志-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/webproject/log/framework.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!--
+		name:用来指定受此loger约束的某一个包或者具体的某一个类
+		level:用来设置打印级别，大小写无关TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF
+		addtivity:是否向上级loger传递打印信息。默认是true
+		可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger
+	-->
+	<logger name="com.ycl.framework" level="INFO" />
+
+	<!--log4jdbc -->
+	<logger name="jdbc.sqltiming" level="INFO"/>
+
+
+	<!-- <root>也是<loger>元素，但是它是根loger。只有一个level属性，因为已经被命名为"root"
+		 <root>元素必须写在最后
+	-->
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>
